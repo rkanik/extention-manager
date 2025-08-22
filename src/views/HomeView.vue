@@ -62,9 +62,9 @@
         </div>
       </div>
 
-      <div>
+      <div v-if="disabledExtensions.length > 0">
         <div class="text-sm font-semibold">Disabled</div>
-        <div v-if="disabledExtensions.length > 0" class="flex flex-wrap gap-2 mt-2">
+        <div class="flex flex-wrap gap-2 mt-2">
           <ExtensionCard
             v-for="extension in disabledExtensions"
             :key="extension.id"
