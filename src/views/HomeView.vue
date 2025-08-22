@@ -6,14 +6,15 @@
 
       <!-- Action Buttons -->
       <div class="flex">
-        <IconButton @click="exportExtensions">
-          <LucideArrowDownToLine class="w-4 h-4" />
+        <IconButton tooltip="Export" @click="exportExtensions">
+          <LucideShare2 class="w-4 h-4" />
         </IconButton>
-        <IconButton as="label">
-          <LucideFilePlus2 class="w-4 h-4" />
+
+        <IconButton as="label" tooltip="Import">
+          <LucidePackagePlus class="w-[18px] h-[18px]" />
           <input type="file" accept=".json" @change="importExtensions" class="hidden" />
         </IconButton>
-        <IconButton @click="toggleTheme">
+        <IconButton tooltip="Toggle Theme" @click="toggleTheme">
           <LucideSun class="w-[18px] h-[18px]" v-if="isDark" />
           <LucideMoonStar class="w-4 h-4" v-else />
         </IconButton>
@@ -106,8 +107,8 @@ import { useThemeStore, useThemeStoreState } from '@/stores/useThemeStore'
 
 import LucideSun from '~icons/lucide/sun'
 import LucideMoonStar from '~icons/lucide/moon-star'
-import LucideArrowDownToLine from '~icons/lucide/arrow-down-to-line'
-import LucideFilePlus2 from '~icons/lucide/file-plus-2'
+import LucideShare2 from '~icons/lucide/share-2'
+import LucidePackagePlus from '~icons/lucide/package-plus'
 
 type TStatus = {
   message: string
@@ -160,7 +161,7 @@ const disabledExtensions = computed(() => {
 })
 
 const installableExtensions = computed(() => {
-  return filteredExtensions.value.filter((e) => e.isRemote)
+  return filteredExtensions.value.filter((e) => e.isRemote && !e.isLocal)
 })
 
 const showStatus = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
