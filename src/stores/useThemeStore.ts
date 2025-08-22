@@ -6,10 +6,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   const toggleTheme = () => {
     theme.value = theme.value === 'light' ? 'dark' : 'light'
-    console.log('toggleTheme', theme.value)
-    chrome.storage.local.set({
-      theme: theme.value,
-    })
+    chrome.storage.local.set({ theme: theme.value })
   }
 
   onMounted(() => {
@@ -18,6 +15,11 @@ export const useThemeStore = defineStore('theme', () => {
       theme.value = result.theme || 'light'
     })
   })
+
+  watch(isDark, (isDark) => {
+    document.documentElement.classList.toggle('dark', isDark)
+  })
+
   return {
     theme,
     isDark,

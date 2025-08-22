@@ -8,6 +8,22 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Button: typeof import('./components/ui/button/Button.vue')['default']
+    ContextMenu: typeof import('./components/ui/context-menu/ContextMenu.vue')['default']
+    ContextMenuCheckboxItem: typeof import('./components/ui/context-menu/ContextMenuCheckboxItem.vue')['default']
+    ContextMenuContent: typeof import('./components/ui/context-menu/ContextMenuContent.vue')['default']
+    ContextMenuGroup: typeof import('./components/ui/context-menu/ContextMenuGroup.vue')['default']
+    ContextMenuItem: typeof import('./components/ui/context-menu/ContextMenuItem.vue')['default']
+    ContextMenuLabel: typeof import('./components/ui/context-menu/ContextMenuLabel.vue')['default']
+    ContextMenuPortal: typeof import('./components/ui/context-menu/ContextMenuPortal.vue')['default']
+    ContextMenuRadioGroup: typeof import('./components/ui/context-menu/ContextMenuRadioGroup.vue')['default']
+    ContextMenuRadioItem: typeof import('./components/ui/context-menu/ContextMenuRadioItem.vue')['default']
+    ContextMenuSeparator: typeof import('./components/ui/context-menu/ContextMenuSeparator.vue')['default']
+    ContextMenuShortcut: typeof import('./components/ui/context-menu/ContextMenuShortcut.vue')['default']
+    ContextMenuSub: typeof import('./components/ui/context-menu/ContextMenuSub.vue')['default']
+    ContextMenuSubContent: typeof import('./components/ui/context-menu/ContextMenuSubContent.vue')['default']
+    ContextMenuSubTrigger: typeof import('./components/ui/context-menu/ContextMenuSubTrigger.vue')['default']
+    ContextMenuTrigger: typeof import('./components/ui/context-menu/ContextMenuTrigger.vue')['default']
     ExtensionCard: typeof import('./components/ExtensionCard.vue')['default']
     IconButton: typeof import('./components/IconButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

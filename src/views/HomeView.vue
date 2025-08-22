@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="px-4 flex-none">
+    <div class="px-4 flex-none mt-2">
       <!-- Status Messages -->
       <div
         v-if="status"
