@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
-  width: 400px;
-  min-height: 500px;
+  /* width: 400px;
+  min-height: 500px; */
 }
