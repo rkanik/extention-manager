@@ -1,52 +1,57 @@
-# Quick Development Setup
+# Development Setup Guide
 
-## Install & Build
-```bash
-npm install
-npm run build
-```
+## Rebuild on Change Implementation
 
-## Load in Chrome
-1. Go to `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked"
-4. **Select the `dist` folder** (not the project root)
+This guide explains how to set up automatic rebuilds when you make changes to your Chrome extension code.
 
-## Development Workflow
-1. Make changes to files in `src/`
-2. Run `npm run build`
-3. Refresh the extension in Chrome extensions page
-4. Test your changes
+### Available Scripts
 
-## Features Implemented
-✅ Manage installed extensions (enable/disable/delete)
-✅ Available extensions list with install functionality
-✅ Export extensions to JSON
-✅ Import extensions from JSON
-✅ Search functionality
-✅ Modern UI with Tailwind CSS
-✅ Vue.js 3 with Composition API
+1. **`npm run watch`** - Builds the extension and watches for changes
+2. **`npm run dev:watch`** - Development mode with watch enabled
+3. **`npm run dev`** - Standard development server (for web development)
 
-## File Structure
-- `src/App.vue` - Main Vue component
-- `src/popup.js` - Vue app initialization
-- `src/background.js` - Background service worker
-- `src/style.css` - Global styles with Tailwind
-- `popup.html` - Popup entry point (root)
-- `public/manifest.json` - Extension configuration
-- `public/Icon 128x128.png` - Extension icon
-- `dist/` - Complete extension bundle (load this in Chrome)
+### How to Use
 
-## Build Output
-The `dist/` directory contains everything needed for the extension:
-- `manifest.json` - Extension configuration (from public/)
-- `popup.html` - Main popup interface
-- `popup.js` - Vue application bundle
-- `popup.css` - Tailwind CSS styles
-- `background.js` - Background service worker
-- `Icon 128x128.png` - Extension icon (from public/)
+1. **Start the watch mode:**
+   ```bash
+   npm run watch
+   ```
 
-## Static Files
-Files in the `public/` directory are automatically copied to `dist/` during build:
-- `manifest.json` - Extension configuration
-- `Icon 128x128.png` - Extension icon
+2. **Make changes to your code** in the `src/` directory or `popup.html`
+
+3. **The extension will automatically rebuild** when you save changes
+
+4. **Reload the extension in Chrome:**
+   - Go to `chrome://extensions/`
+   - Find your extension
+   - Click the refresh/reload button
+
+### Chrome Extension Development Workflow
+
+1. Run `npm run watch` in your terminal
+2. Load the extension in Chrome from the `dist/` folder
+3. Make changes to your Vue components or JavaScript files
+4. The build will automatically trigger
+5. Reload the extension in Chrome to see changes
+
+### Tips for Efficient Development
+
+- Keep the Chrome Extensions page open (`chrome://extensions/`)
+- Enable "Developer mode" in Chrome Extensions
+- Use the refresh button on your extension card for quick reloads
+- The watch mode will rebuild the entire extension when any file changes
+
+### File Structure
+
+- `src/` - Your Vue components and JavaScript files
+- `popup.html` - The popup entry point
+- `public/` - Static assets (manifest.json, icons)
+- `dist/` - Built extension (auto-generated)
+
+### Troubleshooting
+
+If the watch mode isn't working:
+1. Check that you're running the correct script
+2. Ensure no other processes are using the same ports
+3. Try stopping and restarting the watch process
+4. Check the terminal for any error messages

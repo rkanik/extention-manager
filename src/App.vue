@@ -1,9 +1,7 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <!-- Header -->
-    <div
-      class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-b-lg"
-    >
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-b-lg">
       <h1 class="text-lg font-semibold">Extension Manager</h1>
     </div>
 
@@ -12,9 +10,7 @@
       <div class="bg-white rounded-lg p-3 mb-4 shadow-sm">
         <h2 class="text-sm font-medium text-gray-900 mb-1">My Extensions</h2>
         <p class="text-xs text-gray-500">
-          {{ filteredExtensions.length }} extension{{
-            filteredExtensions.length !== 1 ? "s" : ""
-          }}
+          {{ filteredExtensions.length }} extension{{ filteredExtensions.length !== 1 ? 's' : '' }}
           in your list
         </p>
       </div>
@@ -24,15 +20,9 @@
         v-if="status"
         :class="[
           'p-3 rounded-lg mb-4 text-sm',
-          status.type === 'success'
-            ? 'bg-green-100 text-green-800 border border-green-200'
-            : '',
-          status.type === 'error'
-            ? 'bg-red-100 text-red-800 border border-red-200'
-            : '',
-          status.type === 'info'
-            ? 'bg-blue-100 text-blue-800 border border-blue-200'
-            : '',
+          status.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : '',
+          status.type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' : '',
+          status.type === 'info' ? 'bg-blue-100 text-blue-800 border border-blue-200' : '',
         ]"
       >
         {{ status.message }}
@@ -50,12 +40,7 @@
           class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
         >
           Import
-          <input
-            type="file"
-            accept=".json"
-            @change="importExtensions"
-            class="hidden"
-          />
+          <input type="file" accept=".json" @change="importExtensions" class="hidden" />
         </label>
       </div>
 
@@ -68,9 +53,7 @@
       />
 
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-8 text-gray-500">
-        Loading...
-      </div>
+      <div v-if="loading" class="text-center py-8 text-gray-500">Loading...</div>
 
       <!-- Extension List -->
       <div v-else class="space-y-3 max-h-80 overflow-y-auto">
@@ -108,7 +91,7 @@
                       : 'bg-green-600 text-white hover:bg-green-700',
                   ]"
                 >
-                  {{ extension.enabled ? "Disable" : "Enable" }}
+                  {{ extension.enabled ? 'Disable' : 'Enable' }}
                 </button>
                 <button
                   @click="onUninstallExtension(extension.id)"
@@ -132,31 +115,22 @@
         </div>
 
         <!-- Empty State -->
-        <div
-          v-if="extensions.length === 0"
-          class="text-center py-8 text-gray-500"
-        >
-          <h3 class="font-medium text-gray-900 mb-2">
-            No extensions in your list
-          </h3>
-          <p class="text-sm">
-            Import a JSON file to get started, or add extensions manually
-          </p>
+        <div v-if="extensions.length === 0" class="text-center py-8 text-gray-500">
+          <h3 class="font-medium text-gray-900 mb-2">No extensions in your list</h3>
+          <p class="text-sm">Import a JSON file to get started, or add extensions manually</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from "vue";
+<script setup lang="ts">
+const loading = ref(false)
+const searchQuery = ref('')
+const status = ref(null)
 
-const loading = ref(false);
-const searchQuery = ref("");
-const status = ref(null);
-
-const localExtensions = ref([]);
-const remoteExtensions = ref([]);
+const localExtensions = ref([])
+const remoteExtensions = ref([])
 
 const extensions = computed(() => {
   return localExtensions.value
@@ -172,8 +146,8 @@ const extensions = computed(() => {
           ...e,
           isLocal: false,
           isRemote: true,
-        }))
-    );
+        })),
+    )
 
   //   const local = localExtensions.value.map((e) => {
   //     return {
@@ -193,7 +167,7 @@ const extensions = computed(() => {
   //     }, {})
   //   );
   //   return [...local, ...remote];
-});
+})
 
 // Currently installed extensions (from Chrome API)
 // const installedExtensions = ref([]);
@@ -203,21 +177,21 @@ const extensions = computed(() => {
 // const allExtensions = ref([]);
 
 const filteredExtensions = computed(() => {
-  if (!searchQuery.value) return extensions.value;
+  if (!searchQuery.value) return extensions.value
 
   return extensions.value.filter(
     (ext) =>
       ext.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      ext.description.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
-});
+      ext.description.toLowerCase().includes(searchQuery.value.toLowerCase()),
+  )
+})
 
-const showStatus = (message, type = "info") => {
-  status.value = { message, type };
+const showStatus = (message, type = 'info') => {
+  status.value = { message, type }
   setTimeout(() => {
-    status.value = null;
-  }, 3000);
-};
+    status.value = null
+  }, 3000)
+}
 
 // Load imported extensions from storage
 // const loadImportedExtensions = () => {
@@ -310,122 +284,112 @@ const showStatus = (message, type = "info") => {
 const onToggleEnabled = async (id) => {
   chrome.management.get(id, (extension) => {
     if (chrome.runtime.lastError) {
-      showStatus("Failed to get extension info", "error");
-      return;
+      showStatus('Failed to get extension info', 'error')
+      return
     }
-    const newEnabledState = !extension.enabled;
+    const newEnabledState = !extension.enabled
     chrome.management.setEnabled(id, newEnabledState, () => {
       if (chrome.runtime.lastError) {
-        showStatus("Failed to toggle extension", "error");
-        return;
+        showStatus('Failed to toggle extension', 'error')
+        return
       }
-      localExtensions.value = localExtensions.value.map((e) =>
-        e.id === id ? { ...e, enabled: newEnabledState } : e
-      );
-    });
-  });
-};
+      localExtensions.value = localExtensions.value.map((e) => (e.id === id ? { ...e, enabled: newEnabledState } : e))
+    })
+  })
+}
 
 const onUninstallExtension = async (id) => {
   chrome.management.uninstall(id, {}, () => {
     if (chrome.runtime.lastError) {
-      showStatus("Failed to remove extension", "error");
-      return;
+      showStatus('Failed to remove extension', 'error')
+      return
     }
-  });
-};
+  })
+}
 
 const onInstallExtension = async (extension) => {
   chrome.tabs.create({
-    url:
-      extension.homepageUrl ||
-      `https://chromewebstore.google.com/detail/${extension.id}`,
-  });
-};
+    url: extension.homepageUrl || `https://chromewebstore.google.com/detail/${extension.id}`,
+  })
+}
 
 const exportExtensions = () => {
   try {
     const data = {
       extensions: localExtensions.value,
       exportedAt: new Date().toISOString(),
-    };
+    }
     const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `extensions-${Date.now()}.json`;
-    a.click();
+      type: 'application/json',
+    })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `extensions-${Date.now()}.json`
+    a.click()
 
-    URL.revokeObjectURL(url);
-    showStatus(
-      "Currently installed extensions exported successfully",
-      "success"
-    );
+    URL.revokeObjectURL(url)
+    showStatus('Currently installed extensions exported successfully', 'success')
   } catch (error) {
-    showStatus("Failed to export extensions", "error");
+    showStatus('Failed to export extensions', 'error')
   }
-};
+}
 
-const remoteKey = "remoteExtensions";
+const remoteKey = 'remoteExtensions'
 
 const importExtensions = (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+  const file = event.target.files[0]
+  if (!file) return
 
-  const reader = new FileReader();
+  const reader = new FileReader()
   reader.onload = (e) => {
     try {
-      const data = JSON.parse(e.target.result);
+      const data = JSON.parse(e.target.result)
       if (Array.isArray(data?.extensions) && data?.extensions?.length > 0) {
-        remoteExtensions.value = data.extensions;
+        remoteExtensions.value = data.extensions
         chrome.storage.local.set({
           [remoteKey]: JSON.stringify({
             ...data,
             importedAt: new Date().toISOString(),
           }),
-        });
+        })
 
-        showStatus(
-          "Extensions list imported and saved successfully",
-          "success"
-        );
+        showStatus('Extensions list imported and saved successfully', 'success')
       } else {
-        showStatus("No extension data found in file", "error");
-        return;
+        showStatus('No extension data found in file', 'error')
+        return
       }
 
       //   // Save to storage and merge
       //   saveImportedExtensions();
       //   mergeExtensions();
     } catch (error) {
-      showStatus("Invalid file format", "error");
+      showStatus('Invalid file format', 'error')
     }
-  };
-  reader.readAsText(file);
+  }
+  reader.readAsText(file)
 
   // Reset file input
-  event.target.value = "";
-};
+  event.target.value = ''
+}
 
 onMounted(() => {
   chrome.management.getAll((extensions) => {
     // console.log("extensions", extensions);
-    localExtensions.value = extensions;
-  });
+    localExtensions.value = extensions
+  })
 
   chrome.storage.local.get([remoteKey], (result) => {
     if (result[remoteKey]) {
       try {
-        const data = JSON.parse(result[remoteKey]);
+        const data = JSON.parse(result[remoteKey])
         if (Array.isArray(data?.extensions) && data?.extensions?.length > 0) {
-          remoteExtensions.value = data.extensions;
+          remoteExtensions.value = data.extensions
         }
       } catch (error) {
-        console.error("Error parsing remote extensions", error);
+        console.error('Error parsing remote extensions', error)
       }
     }
-  });
-});
+  })
+})
 </script>
