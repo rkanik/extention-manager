@@ -27,11 +27,12 @@ const colors = [
 ]
 
 const zImportedExtensions = z.object({
-  color: z.string(),
   file: z.object({
     name: z.string(),
     size: z.number(),
   }),
+  color: z.string(),
+  size: z.number(),
   importedAt: z.number(),
   exportedAt: z.number(),
   extensions: z.array(z.any()),
@@ -43,6 +44,7 @@ type TRemoteExtensions = {
     size: number
   }
   color: string
+  size: number
   importedAt: number
   exportedAt: number
   extensions: TExtension[]
@@ -81,6 +83,7 @@ export const useRemoteExtensions = () => {
             size: file.size,
           },
           color: colors[Math.floor(Math.random() * colors.length)],
+          size: data.extensions.length,
           importedAt: Date.now(),
           exportedAt: data.exportedAt,
           extensions: data.extensions,

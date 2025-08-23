@@ -22,9 +22,20 @@ const searchQuery = ref('')
 const localExtensions = ref<TExtension[]>([])
 const { remoteExtensions, importRemoteExtensions, deleteRemoteExtensions } = useRemoteExtensions()
 
+const filter = (item: TExtension) => {
+  return (
+    item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+}
+
+const filteredLocalExtensions = computed(() => {
+  return localExtensions.value.filter(filter)
+})
+
 const groupedLocalExtensions = computed(() => {
   return groupBy(
-    localExtensions.value.map((e) => {
+    filteredLocalExtensions.value.map((e) => {
       return {
         ...e,
         colors: remoteExtensions.value
@@ -34,6 +45,19 @@ const groupedLocalExtensions = computed(() => {
     }),
     (e) => (e.enabled ? 'Enabled' : 'Disabled'),
   )
+})
+
+const filteredRemoteExtensions = computed(() => {
+  return remoteExtensions.value
+    .map((e) => {
+      return {
+        ...e,
+        extensions: e.extensions
+          .filter((e) => !localExtensions.value.some((v) => v.id === e.id))
+          .filter(filter),
+      }
+    })
+    .filter((e) => e.extensions.length > 0)
 })
 
 const onToggleEnabled = async (extension: TExtension) => {
@@ -243,7 +267,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-for="(item, index) in remoteExtensions" :key="index">
+      <div v-for="(item, index) in filteredRemoteExtensions" :key="index">
         <div class="flex justify-between gap-2">
           <div
             class="w-2 h-2 flex-none self-center rounded-full"
@@ -254,7 +278,7 @@ onMounted(() => {
               {{ item.file.name }}
             </div>
             <div class="text-xs text-muted-foreground">
-              {{ $d(item.importedAt).fromNow() }}, {{ item.extensions.length }} extensions
+              {{ $d(item.importedAt).fromNow() }}, {{ item.size }} extensions
             </div>
           </div>
           <div class="flex-none">
@@ -265,9 +289,7 @@ onMounted(() => {
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <ExtensionCard
-            v-for="extension in item.extensions.filter(
-              (e) => !localExtensions.some((v) => v.id === e.id),
-            )"
+            v-for="extension in item.extensions"
             :key="extension.id"
             :extension="extension"
             @toggle="onToggleEnabled"
@@ -278,10 +300,19 @@ onMounted(() => {
       </div>
 
       <!-- Empty State -->
-      <!-- <div v-if="filteredExtensions.length === 0" class="text-center py-8 text-gray-500">
-        <div class="text-sm font-medium text-gray-900 mb-2">No extensions in your list</div>
-        <p class="text-xs">Import a JSON file to get started, or add extensions manually</p>
-      </div> -->
+      <div
+        v-if="!filteredRemoteExtensions.length && !filteredLocalExtensions.length"
+        class="text-center py-8"
+      >
+        <div class="text-sm font-medium mb-2">No extensions found</div>
+        <p class="text-xs text-muted-foreground">
+          {{
+            searchQuery
+              ? 'No extensions found matching your search'
+              : 'Install extensions to get started'
+          }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
