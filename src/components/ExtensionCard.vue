@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/context-menu'
 
 const props = defineProps<{
+  isLocal?: boolean
   extension: TExtension
 }>()
 
@@ -18,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const onClick = () => {
-  if (props.extension.isLocal) {
+  if (props.isLocal) {
     return emit('toggle', props.extension)
   }
   emit('install', props.extension)
@@ -31,10 +32,18 @@ const onClick = () => {
       <Tooltip>
         <TooltipTrigger>
           <div
-            :class="{ 'opacity-40': extension.isLocal && !extension.enabled }"
-            class="rounded-lg p-3 border border-gray-200 hover:border-black cursor-pointer dark:border-neutral-800 dark:hover:border-neutral-500"
+            :class="{ 'opacity-40': isLocal && !extension.enabled }"
+            class="rounded-lg p-3 border border-gray-200 hover:border-black cursor-pointer dark:border-neutral-800 dark:hover:border-neutral-500 relative"
             @click="onClick"
           >
+            <div class="absolute -top-1 right-1 flex gap-px">
+              <div
+                v-for="color in extension.colors"
+                :key="color"
+                class="w-1.5 h-1.5 rounded-full"
+                :style="{ backgroundColor: color }"
+              />
+            </div>
             <img
               v-if="extension.icon || extension.icons?.length"
               :src="
@@ -54,10 +63,10 @@ const onClick = () => {
       </Tooltip>
     </ContextMenuTrigger>
     <ContextMenuContent>
-      <ContextMenuItem v-if="extension.isLocal" @click="emit('toggle', extension)">
+      <ContextMenuItem v-if="isLocal" @click="emit('toggle', extension)">
         {{ extension.enabled ? 'Disable' : 'Enable' }}
       </ContextMenuItem>
-      <ContextMenuItem v-if="extension.isLocal" @click="emit('uninstall', extension)">
+      <ContextMenuItem v-if="isLocal" @click="emit('uninstall', extension)">
         Remove
       </ContextMenuItem>
       <ContextMenuItem v-else @click="emit('install', extension)"> Open Store </ContextMenuItem>

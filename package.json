@@ -13,13 +13,16 @@
     "@vueuse/core": "^13.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "lucide-vue-next": "^0.541.0",
     "pinia": "^3.0.3",
     "reka-ui": "^2.4.1",
     "tailwind-merge": "^3.3.1",
     "tw-animate-css": "^1.3.7",
     "vue": "^3.4.0",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-sonner": "^2.0.8",
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.63",
