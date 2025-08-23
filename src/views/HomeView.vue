@@ -48,16 +48,14 @@ const groupedLocalExtensions = computed(() => {
 })
 
 const filteredRemoteExtensions = computed(() => {
-  return remoteExtensions.value
-    .map((e) => {
-      return {
-        ...e,
-        extensions: e.extensions
-          .filter((e) => !localExtensions.value.some((v) => v.id === e.id))
-          .filter(filter),
-      }
-    })
-    .filter((e) => e.extensions.length > 0)
+  return remoteExtensions.value.map((e) => {
+    return {
+      ...e,
+      extensions: e.extensions
+        .filter((e) => !localExtensions.value.some((v) => v.id === e.id))
+        .filter(filter),
+    }
+  })
 })
 
 const onToggleEnabled = async (extension: TExtension) => {
@@ -301,7 +299,7 @@ onMounted(() => {
 
       <!-- Empty State -->
       <div
-        v-if="!filteredRemoteExtensions.length && !filteredLocalExtensions.length"
+        v-if="!filteredLocalExtensions.length && !filteredRemoteExtensions.length"
         class="text-center py-8"
       >
         <div class="text-sm font-medium mb-2">No extensions found</div>
